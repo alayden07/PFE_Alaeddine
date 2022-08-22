@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+    />
+    <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            crossorigin="anonymous"
+    />
+    <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+    >
+    <style>
+        .sidebar {
+            height: 100vh;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-pack: justify;
+            justify-content: center;
+            padding: .5rem 1rem;
+            flex-direction: column;
+            align-content: center;
+            width: 290px;
+        }
+
+        .vertical-center {
+            min-height: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .alert-group>.alert:first-child:not(:last-child){
+    -webkit-border-top-left-radius:5px;
+    -webkit-border-top-right-radius:5px;
+    -webkit-border-bottom-right-radius:0;
+    -webkit-border-bottom-left-radius:0;
+       -moz-border-radius-topleft:5px;
+       -moz-border-radius-topright:5px;
+       -moz-border-radius-bottomright:0;
+       -moz-border-radius-bottomleft:0;
+            border-top-left-radius:5px;
+            border-top-right-radius:5px;
+            border-bottom-right-radius:0;
+            border-bottom-left-radius:0;
+    margin-bottom:0
+}
+.alert-group>.alert:not(:first-child):not(:last-child){
+    -webkit-border-radius:0;
+       -moz-border-radius:0;
+            border-radius:0;
+    border-top:0;
+    margin-bottom:0
+}
+.alert-group>.alert:last-child:not(:first-child){
+    -webkit-border-top-left-radius:0;
+    -webkit-border-top-right-radius:0;
+    -webkit-border-bottom-right-radius:5px;
+    -webkit-border-bottom-left-radius:5px;
+       -moz-border-radius-topleft:0;
+       -moz-border-radius-topright:0;
+       -moz-border-radius-bottomright:5px;
+       -moz-border-radius-bottomleft:5px;
+            border-top-left-radius:0;
+            border-top-right-radius:0;
+            border-bottom-right-radius:5px;
+            border-bottom-left-radius:5px;
+    border-top:0
+}
+
+    </style>
+    <title>{% block title %}Acceuil{% endblock %}</title>
+</head>
+<body style="display:flex;">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sidebar" style="">
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbar"
+
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" style="width: 100%" id="navbar">
+        <div class="navbar-nav d-flex flex-column" style="width: 100%; height: 310px;">
+            <a class="d-flex flex-row navbar-brand justify-content-center "
+               style=" width: 100%; text-align: center; border-radius: 5px;  margin-top:-150px !important;margin-bottom:120px !important">
+                <div style="width: 140px; text-align: center !important" >
+                    <img src="{{url_for('static', filename='logo.png')}}"  style="margin-left:-15px"/>
+
+                </div>
+            </a>
+            {% if user.is_authenticated %}
+
+            <a class="d-flex flex-row justify-content-center nav-item nav-link" id="home" href="/"
+               style="background-color: rgba(255,255,255,0.1); width: 100%; text-align: center; border-radius: 5px; color: white; margin: 5px 0;">
+                <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">home</span>
+                    <span>Acceuil</span>
+                </div>
+            </a>
+
+            <a class="d-flex flex-row justify-content-center nav-item nav-link" id="upload"
+               style="background-color: rgba(255,255,255,0.1); width: 100%; text-align: center; border-radius: 5px; color: white; margin: 5px 0;  cursor: pointer;"
+               onclick="displayBtns()">
+                <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </div>
+            </a>
+            <div id="dashboardBtn" class="d-flex flex-column justify-content-center align-items-center"
+                 style="display: none !important;">
+                <a class="d-flex flex-row justify-content-center nav-item nav-link" id="accessLog" href="/dashboard"
+                   style="background-color: rgba(255,255,255,0.05); width: 80%; text-align: center; border-radius: 5px; color: white; margin: 5px 0; cursor: pointer;">
+                    <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                       <!-- <span style="padding: 0 5px 0 0 !important" class="material-icons">upload_file</span>
+                        <span>Access Log</span>-->
+                         <span style="padding: 0 5px 0 0 !important" class="material-icons">dashboard</span>
+                    <span>AccessLog</span>
+
+                        <!--<input style="display: none;" type="file" id="accessLogFile" name="accessLogFilename"  onchange="onfilechange()">
+                    -->
+                    </div>
+                </a>
+                <a class="d-flex flex-row justify-content-center nav-item nav-link" id="errorLog" href="/errorlogdash"
+                   style="background-color: rgba(255,255,255,0.05); width: 80%; text-align: center; border-radius: 5px; color: white; margin: 5px 0; cursor: pointer;">
+                    <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                        <!--<span style="padding: 0 5px 0 0 !important" class="material-icons">upload_file</span>
+                        <span>Error Log</span>-->
+                        <span style="padding: 0 5px 0 0 !important" class="material-icons">dashboard</span>
+                    <span>ErrorLog</span>
+                       <!-- <input style="display: none;" type="file" id="errorLogFile" name="errorLogFilename">-->
+                    </div>
+                </a>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <a class="d-flex flex-row justify-content-center nav-item nav-link" id="uploadfile"
+               style="background-color: rgba(255,255,255,0.1); width: 100%; text-align: center; border-radius: 5px; color: white; margin: 5px 0;  cursor: pointer;"
+               onclick="display2Btns()">
+                <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">upload</span>
+                    <span>Parcourir</span>
+                </div>
+            </a>
+            <div id="parcourirBtn" class="d-flex flex-column justify-content-center align-items-center"
+                 style="display: none !important;">
+                <label class="d-flex flex-row justify-content-center nav-item nav-link" id="accessFile"
+                   style="background-color: rgba(255,255,255,0.05); width: 80%; text-align: center; border-radius: 5px; color: white; margin: 5px 0; cursor: pointer;">
+                     <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">upload</span>
+                    <span>Fichiers ErrorLog </span>
+                     <form method="POST" action="/modelCreation" enctype="multipart/form-data">
+                    <input style="display: none;" type="file" id="errorLogFile" name="errorLogFilename[]"  onchange="form.submit()" multiple="multiple"></form>
+                </div>
+                </label>
+                <label class="d-flex flex-row justify-content-center nav-item nav-link" id="errorFile"
+                   style="background-color: rgba(255,255,255,0.05); width: 80%; text-align: center; border-radius: 5px; color: white; margin: 5px 0; cursor: pointer;">
+                   <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">upload</span>
+                    <span>Fichiers AccessLog</span>
+                    <form method="POST" action="/modelCreationAccess" enctype="multipart/form-data">
+                    <input style="display: none;" type="file" id="accessLogFile" name="accessLogFilename[]"  onchange="form.submit()" multiple="multiple"></form>
+                </div>
+                </label>
+            </div>
+            <!--<label class="d-flex flex-row justify-content-center nav-item nav-link" id="dashboard"
+               style="background-color: rgba(255,255,255,0.1); width: 100%;
+                text-align: center; border-radius: 5px; color: white; margin: 5px 0;">
+                <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">upload</span>
+                    <span>Parcourir</span>
+                    <form method="POST" action="/modelCreation" enctype="multipart/form-data">
+                    <input style="display: none;" type="file" id="errorLogFile" name="errorLogFilename[]"  onchange="form.submit()" multiple="multiple"></form>
+                </div>
+            </label>
+
+            <label class="d-flex flex-row justify-content-center nav-item nav-link" id="accessLogBrowse"
+               style="background-color: rgba(255,255,255,0.1); width: 100%;
+                text-align: center; border-radius: 5px; color: white; margin: 5px 0;">
+                <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">upload</span>
+                    <span>Parcourir</span>
+                    <form method="POST" action="/modelCreationAccess" enctype="multipart/form-data">
+                    <input style="display: none;" type="file" id="accessLogFile" name="accessLogFilename[]"  onchange="form.submit()" multiple="multiple"></form>
+                </div>
+            </label>-->
+
+
+
+
+
+
+
+
+
+            <a class="d-flex flex-row justify-content-center nav-item nav-link" id="logout" href="/logout"
+               style="background-color: rgba(255,255,255,0.1); width: 100%; text-align: center; border-radius: 5px; color: white; margin: 5px 0;">
+                <div style="width: 140px;" class="d-flex flex-row justify-content-start">
+                    <span style="padding: 0 5px 0 0 !important" class="material-icons">logout</span>
+                    <span>Déconnexion</span>
+                </div>
+            </a>
+            <!--<a class="nav-item nav-link" id="errorlog" href="/errorlogDashboard" style="background-color: rgba(255,255,255,0.1); width: 100%; text-align: center; border-radius: 5px; color: white; margin: 5px 0;">Error Log</a>-->
+            {% else %}
+            <a class="nav-item nav-link" id="login" href="/login"
+               style="background-color: rgba(255,255,255,0.1); width: 100%; text-align: center; border-radius: 5px; color: white; margin: 5px 0;">Connexion</a>
+            <a class="nav-item nav-link" id="signUp" href="/sign-up"
+               style="background-color: rgba(255,255,255,0.1); width: 100%; text-align: center; border-radius: 5px; color: white; margin: 5px 0;">Inscription</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+<div class="d-flex flex-column container-fluid vertical-center ">
+    <div class="row ml-auto pull-right" style="position:absolute; top: 10px !important; right: 25px !important;margin-left:300px !important">
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+        <div style="width:100%;">
+		<div class="alert-group"  style="width:400px !important; float: right !important">
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  {{ message }}
+            </div>
+        </div>
+        </div>
+
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show container-fluid position-absolute" role="alert"
+         style="width: 700px">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+</div>
+    <div class="d-flex flex-column justify-content-center align-items-center align-content-center container-fluid vertical-center">
+        {%
+        block content %} {% endblock %}
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"
+></script>
+<script
+        type="text/javascript"
+        src="{{ url_for('static', filename='index.js') }}"
+></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    let dashboardBtn = document.getElementById("dashboardBtn");
+    let display = false;
+
+    let parcourirBtn = document.getElementById("parcourirBtn");
+    let displayM2 = false;
+
+    function displayBtns() {
+        display = !display;
+        if (display == 1) {
+            dashboardBtn.removeAttribute('style');
+        } else if (display == 0) {
+            dashboardBtn.removeAttribute('style');
+            dashboardBtn.setAttribute('style', 'display: none !important;');
+        }
+    }
+
+    function display2Btns() {
+        displayM2 = !displayM2;
+        if (displayM2 == 1) {
+            parcourirBtn.removeAttribute('style');
+        } else if (displayM2 == 0) {
+            parcourirBtn.removeAttribute('style');
+            parcourirBtn.setAttribute('style', 'display: none !important;');
+        }
+    }
+
+
+    function onfilechange() {
+       console.log($('#accessLogFile').get(0).files);
+      console.log(window.document.getElementById('accessLogFile'));
+       fetch(" https://api.powerbi.com/v1.0/myorg/datasets/{datasetId}/Default.UpdateDatasources", {
+                method: "POST",
+                body: JSON.stringify({ noteId: noteId }),
+              }).then((_res) => {
+                window.location.href = "/";
+              });
+    }
+
+
+</script>
+</body>
+</html>
